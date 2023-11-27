@@ -52,7 +52,6 @@ class MusicService : Service() {
     private fun startForegroundService(mediaUri: Uri) {
         val notification = createNotification()
         startForeground(NOTIFICATION_ID, notification)
-
         try {
             mediaPlayer?.apply {
                 reset()
