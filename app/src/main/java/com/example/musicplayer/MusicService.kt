@@ -42,7 +42,6 @@ class MusicService : Service() {
                         startForegroundService(mediaUri)
                     }
                 }
-
                 ACTION_STOP -> stopForegroundService()
                 else -> {}
             }
