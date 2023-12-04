@@ -3,39 +3,31 @@ package com.example.recyclerview
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.recyclerview.databinding.ActivityMainBinding
 import java.util.UUID
 
 
 class MainActivity : AppCompatActivity(), AddContactDialogFragment.AddContactListener {
 
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var userAdapter: ContactAdapter
+        private lateinit var binding: ActivityMainBinding
+        private lateinit var userAdapter: ContactAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            binding = ActivityMainBinding.inflate(layoutInflater)
+            setContentView(binding.root)
 
-        // Инициализация и установка LayoutManager для RecyclerView
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+            binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
-        binding.floatingActionButton.setOnClickListener {
-            val addContactDialog = AddContactDialogFragment()
-            addContactDialog.show(supportFragmentManager, "AddContactDialog")
-        }
+            userAdapter = ContactAdapter()
+            binding.recyclerView.adapter = userAdapter
+            binding.floatingActionButton.setOnClickListener {
+                AddContactDialogFragment().show(supportFragmentManager, "AddContactDialogFragment")
+            }
 
-        // Создание и установка адаптера для RecyclerView
-        userAdapter = ContactAdapter()
-        binding.recyclerView.adapter = userAdapter
+            val userList = mutableListOf<Contact>()
 
-        // Получите список пользователей или загрузите из источника данных
-
-        val userList = mutableListOf<Contact>()
-
-// Заполнение списка 100 пользователями с фамилиями "Фамилия" и именами "Имя N", где N - номер от 1 до 100
-        for (i in 1..100) {
+        for (i in 1..3) {
             val user = Contact(
                 getRandomId(),
                 getRandomName(),
@@ -44,10 +36,8 @@ class MainActivity : AppCompatActivity(), AddContactDialogFragment.AddContactLis
             )
             userList.add(user)
         }
-
-        // Передайте новый список пользователей в адаптер для обновления RecyclerView
-        userAdapter.submitList(userList)
-    }
+            userAdapter.submitList(userList)
+        }
 
     private fun getRandomName(): String {
         val userList = listOf(
@@ -78,7 +68,7 @@ class MainActivity : AppCompatActivity(), AddContactDialogFragment.AddContactLis
         return userList[randomIndex]
     }
 
-    private fun getRandomId(): UUID = UUID.randomUUID()
+    private fun getRandomId(): String = UUID.randomUUID().toString()
 
     private fun getRandomPhoneNumber(): String {
         val userList = listOf(
@@ -93,8 +83,8 @@ class MainActivity : AppCompatActivity(), AddContactDialogFragment.AddContactLis
         val randomIndex = (userList.indices).random()
         return userList[randomIndex]
     }
+
     override fun onContactAdded(contact: Contact) {
-        // Добавляем новый контакт в список и обновляем RecyclerView
         val currentList = userAdapter.currentList.toMutableList()
         currentList.add(contact)
         userAdapter.submitList(currentList)
