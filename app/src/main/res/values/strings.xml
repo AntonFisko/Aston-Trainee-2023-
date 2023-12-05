@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">recyclerView</string>
+    <string name="buttonAdd">Add</string>
+    <string name="firstname">FirstName</string>
+    <string name="last_name">Last name</string>
+    <string name="phone_number">Phone number</string>
+    <string name="cancel">Cancel</string>
+    <string name="add">Add</string>
+</resources>
