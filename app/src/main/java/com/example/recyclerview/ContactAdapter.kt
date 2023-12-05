@@ -10,8 +10,8 @@ import com.example.recyclerview.databinding.ItemUserBinding
 private lateinit var binding: ItemUserBinding
 
 class ContactAdapter (
-    private val onClickAction: (BaseItem) -> Unit,
-)  : ListAdapter<Contact, ContactAdapter.ContactViewHolder>(ContactDiffCallback()) {
+    private val editContactListener: (Contact) -> Unit
+) : ListAdapter<Contact, ContactAdapter.ContactViewHolder>(ContactDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
         val binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -21,7 +21,9 @@ class ContactAdapter (
         viewHolder.itemView.setOnClickListener {
             val item = getItem(viewHolder.adapterPosition)
             item?.let { contact ->
-                onClickAction(contact as BaseItem)
+                if (contact is Contact) {
+                    editContactListener(contact)
+                }
             }
         }
 
@@ -50,4 +52,5 @@ class ContactAdapter (
             return oldItem == newItem
         }
     }
+
 }

@@ -18,6 +18,17 @@ class AddContactDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DialogAddContactBinding.inflate(inflater, container, false)
+        val arguments = requireArguments()
+        val firstName = arguments.getString(KEY_FIRST_NAME) ?: ""
+        val lastName = arguments.getString(KEY_LAST_NAME) ?: ""
+        val id = arguments.getString(KEY_ID) ?: ""
+        val phoneNumber = arguments.getString(KEY_PHONE_NUMBER) ?: ""
+
+        // Use the retrieved data to pre-fill the edit texts
+        binding.editTextFirstName.setText(firstName)
+        binding.editTextLastName.setText(lastName)
+        binding.editTextPhoneNumber.setText(phoneNumber)
+
         return binding.root
     }
 

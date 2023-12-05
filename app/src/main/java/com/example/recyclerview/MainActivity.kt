@@ -1,7 +1,6 @@
 package com.example.recyclerview
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recyclerview.databinding.ActivityMainBinding
@@ -10,25 +9,26 @@ import java.util.UUID
 
 class MainActivity : AppCompatActivity(), AddContactDialogFragment.AddContactListener {
 
-        private lateinit var binding: ActivityMainBinding
-        private lateinit var userAdapter: ContactAdapter
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var userAdapter: ContactAdapter
 
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            binding = ActivityMainBinding.inflate(layoutInflater)
-            setContentView(binding.root)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-            binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
-            userAdapter =  ContactAdapter { item ->
-                makeToast("Clicked $item")
-            }
-            binding.recyclerView.adapter = userAdapter
-            binding.floatingActionButton.setOnClickListener {
-                AddContactDialogFragment().show(supportFragmentManager, "AddContactDialogFragment")
-            }
+        userAdapter = ContactAdapter { contact ->
+            openEditContactDialog(contact)
+        }
 
-            val userList = mutableListOf<Contact>()
+        binding.recyclerView.adapter = userAdapter
+        binding.floatingActionButton.setOnClickListener {
+            AddContactDialogFragment().show(supportFragmentManager, "AddContactDialogFragment")
+        }
+
+        val userList = mutableListOf<Contact>()
 
         for (i in 1..3) {
             val user = Contact(
@@ -39,8 +39,8 @@ class MainActivity : AppCompatActivity(), AddContactDialogFragment.AddContactLis
             )
             userList.add(user)
         }
-            userAdapter.submitList(userList)
-        }
+        userAdapter.submitList(userList)
+    }
 
     private fun getRandomName(): String {
         val userList = listOf(
@@ -92,7 +92,14 @@ class MainActivity : AppCompatActivity(), AddContactDialogFragment.AddContactLis
         currentList.add(contact)
         userAdapter.submitList(currentList)
     }
-}
-fun AppCompatActivity.makeToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
-    Toast.makeText(this, message, duration).show()
+
+    fun openEditContactDialog(contact: Contact) {
+        val dialogFragment = AddContactDialogFragment.newInstance(
+            contact.firstName,
+            contact.lastName,
+            contact.id,
+            contact.phoneNumber
+        )
+        dialogFragment.show(supportFragmentManager, "EditContactDialogFragment")
+    }
 }
