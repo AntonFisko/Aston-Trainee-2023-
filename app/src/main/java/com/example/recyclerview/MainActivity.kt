@@ -1,6 +1,7 @@
 package com.example.recyclerview
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recyclerview.databinding.ActivityMainBinding
@@ -19,7 +20,9 @@ class MainActivity : AppCompatActivity(), AddContactDialogFragment.AddContactLis
 
             binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
-            userAdapter = ContactAdapter()
+            userAdapter =  ContactAdapter { item ->
+                makeToast("Clicked $item")
+            }
             binding.recyclerView.adapter = userAdapter
             binding.floatingActionButton.setOnClickListener {
                 AddContactDialogFragment().show(supportFragmentManager, "AddContactDialogFragment")
@@ -89,4 +92,7 @@ class MainActivity : AppCompatActivity(), AddContactDialogFragment.AddContactLis
         currentList.add(contact)
         userAdapter.submitList(currentList)
     }
+}
+fun AppCompatActivity.makeToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(this, message, duration).show()
 }

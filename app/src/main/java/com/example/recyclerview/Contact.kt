@@ -1,11 +1,11 @@
 package com.example.recyclerview
 
 class Contact(
-    val id: String,
+    override val id: String,
     val firstName: String,
     val lastName: String,
     val phoneNumber : String
-){
+): BaseItem {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -27,4 +27,7 @@ class Contact(
         result = 31 * result + phoneNumber.hashCode()
         return result
     }
+}
+interface BaseItem {
+    val id: String
 }

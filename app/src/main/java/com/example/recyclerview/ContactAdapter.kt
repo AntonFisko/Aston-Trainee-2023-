@@ -1,7 +1,6 @@
 package com.example.recyclerview
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -17,7 +16,7 @@ class ContactAdapter (
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
         val binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
-        val viewHolder = ContactViewHolder(binding.root)
+        val viewHolder = ContactViewHolder(binding)
 
         viewHolder.itemView.setOnClickListener {
             val item = getItem(viewHolder.adapterPosition)
@@ -34,8 +33,7 @@ class ContactAdapter (
         holder.bind(user)
     }
 
-    class ContactViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
+    class ContactViewHolder(private val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(user: Contact) {
             binding.textViewFirstName.text = user.firstName
             binding.textViewLastName.text = user.lastName
