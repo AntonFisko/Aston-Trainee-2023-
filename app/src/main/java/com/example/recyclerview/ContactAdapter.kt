@@ -3,20 +3,30 @@ package com.example.recyclerview
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.recyclerview.databinding.ActivityMainBinding
 import com.example.recyclerview.databinding.ItemUserBinding
 
 private lateinit var binding: ItemUserBinding
 
-class ContactAdapter : ListAdapter<Contact, ContactAdapter.ContactViewHolder>(ContactDiffCallback()) {
+class ContactAdapter (
+    private val onClickAction: (BaseItem) -> Unit,
+)  : ListAdapter<Contact, ContactAdapter.ContactViewHolder>(ContactDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
-        binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ContactViewHolder(binding.root)
+        val binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+
+        val viewHolder = ContactViewHolder(binding.root)
+
+        viewHolder.itemView.setOnClickListener {
+            val item = getItem(viewHolder.adapterPosition)
+            item?.let { contact ->
+                onClickAction(contact as BaseItem)
+            }
+        }
+
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {
